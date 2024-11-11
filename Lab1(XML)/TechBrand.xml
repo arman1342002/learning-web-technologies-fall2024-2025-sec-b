@@ -1,0 +1,24 @@
+<products>
+    <product>
+        <id>11</id>
+        <product_Name>Sansung</product_name>
+        <unit_price>35000</unit_price>
+        <stock>50</stock>
+        <status>1</status>
+    </product>
+    <product>
+        <id>20</id>
+        <product_Name>HTC</product_name>
+        <unit_price>65000</unit_price>
+        <stock>35</stock>
+        <status>0</status>
+    </product>
+    <product>
+        <id>23</id>
+        <product_Name>Nokia</product_name>
+        <unit_price>25100</unit_price>
+        <stock>100</stock>
+        <status>1</status>
+    </product>
+
+</products>
