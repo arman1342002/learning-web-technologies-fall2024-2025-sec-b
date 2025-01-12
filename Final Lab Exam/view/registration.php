@@ -19,7 +19,7 @@
         <input type="password" id="password" name="password" required><br><br>
 
         <button type="submit">Register</button><br><br>
-        <label for="name">Already have account?</label>
+        <label>Already have account?</label>
         <a href="login.php">Login</a>
     </form>
 
