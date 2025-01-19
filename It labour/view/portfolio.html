@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freelancer Portfolio</title>
     <style>
-        /* Global Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -102,7 +101,6 @@
     <div class="container">
         <h1>Freelancer Portfolio</h1>
 
-        <!-- Portfolio Form -->
         <form id="portfolio-form">
             <label for="project-title">Project Title:</label>
             <input type="text" id="project-title" name="projectTitle" placeholder="Enter project title" required>
@@ -119,10 +117,8 @@
             <button type="submit">Add to Portfolio</button>
         </form>
 
-        <!-- Portfolio Items List -->
         <div class="portfolio-list">
             <h2>Your Portfolio</h2>
-            <!-- Example Portfolio Item -->
             <div class="portfolio-item">
                 <h3>Website Redesign</h3>
                 <p><strong>Description:</strong> Redesigned the corporate website for a financial firm, improving user experience and mobile responsiveness.</p>
@@ -136,18 +132,15 @@
     </div>
 
     <script>
-        // Handle form submission
         const form = document.getElementById('portfolio-form');
         form.addEventListener('submit', (event) => {
             event.preventDefault();
 
-            // Collect form data
             const projectTitle = document.getElementById('project-title').value;
             const projectDescription = document.getElementById('project-description').value;
             const skillsUsed = document.getElementById('skills-used').value;
             const testimonial = document.getElementById('testimonial').value;
 
-            // Create a new portfolio item
             const portfolioList = document.querySelector('.portfolio-list');
             const portfolioItem = document.createElement('div');
             portfolioItem.className = 'portfolio-item';
@@ -166,16 +159,13 @@
 
             portfolioList.appendChild(portfolioItem);
 
-            // Reset the form
             form.reset();
 
-            // Add delete functionality to the new portfolio item
             portfolioItem.querySelector('button').addEventListener('click', () => {
                 portfolioItem.remove();
             });
         });
 
-        // Add delete functionality to existing portfolio items
         document.querySelectorAll('.portfolio-item button').forEach((button) => {
             button.addEventListener('click', (event) => {
                 event.target.closest('.portfolio-item').remove();

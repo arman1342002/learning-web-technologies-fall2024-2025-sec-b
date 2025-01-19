@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Alerts Setup</title>
     <style>
-        /* Global Styles */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -106,10 +105,8 @@
             <button type="submit">Create Alert</button>
         </form>
 
-        <!-- Job Alert List -->
         <div class="alert-list">
             <h2>Your Job Alerts</h2>
-            <!-- Example Job Alerts -->
             <div class="alert-item">
                 <p><strong>Job Title:</strong> Software Engineer</p>
                 <p><strong>Location:</strong> San Francisco</p>
@@ -126,7 +123,6 @@
     </div>
 
     <script>
-        // Handle form submission
         const form = document.getElementById('job-alert-form');
         form.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -135,7 +131,6 @@
             const location = document.getElementById('location').value;
             const salaryRange = document.getElementById('salary-range').value;
 
-            // Add a new alert to the alert list
             const alertList = document.querySelector('.alert-list');
             const alertItem = document.createElement('div');
             alertItem.className = 'alert-item';
@@ -149,16 +144,13 @@
 
             alertList.appendChild(alertItem);
 
-            // Reset the form
             form.reset();
 
-            // Add delete functionality to the new alert
             alertItem.querySelector('button').addEventListener('click', () => {
                 alertItem.remove();
             });
         });
 
-        // Add delete functionality to existing alerts
         document.querySelectorAll('.alert-item button').forEach(button => {
             button.addEventListener('click', (event) => {
                 event.target.closest('.alert-item').remove();
