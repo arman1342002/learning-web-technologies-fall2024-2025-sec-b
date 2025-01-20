@@ -75,7 +75,7 @@
 <body>
     <div class="container">
         <h1>Dispute Resolution System</h1>
-        <form id="disputeForm" method="POST" action="submit_dispute.php">
+        <form id="disputeForm">
             <label for="userType">I am a:</label>
             <select id="userType" name="userType" required>
                 <option value="employer">Employer</option>
@@ -88,13 +88,53 @@
             <label for="contactInfo">Contact Information:</label>
             <input type="email" id="contactInfo" name="contactInfo" placeholder="Your Email" required>
 
-            <button type="submit">Submit Dispute</button>
+            <button type="button" id="submitButton">Submit Dispute</button>
         </form>
         <div id="statusUpdate">
             <h2>Dispute Status</h2>
             <div id="statusMessage">No updates yet.</div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        document.getElementById('submitButton').addEventListener('click', function () {
+            const userType = document.getElementById('userType').value;
+            const disputeDetails = document.getElementById('disputeDetails').value;
+            const contactInfo = document.getElementById('contactInfo').value;
+
+            const requestData = {
+                userType: userType,
+                disputeDetails: disputeDetails,
+                contactInfo: contactInfo
+            };
+
+            // Send the data to the server using AJAX
+            fetch('submit_dispute.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the status message based on server response
+                const statusMessage = document.getElementById('statusMessage');
+                if (data.success) {
+                    statusMessage.textContent = 'Dispute submitted successfully. Status: ' + data.status;
+                    statusMessage.style.color = 'green';
+                } else {
+                    statusMessage.textContent = 'Error: ' + data.message;
+                    statusMessage.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                // Handle errors
+                const statusMessage = document.getElementById('statusMessage');
+                statusMessage.textContent = 'An error occurred while submitting the dispute.';
+                statusMessage.style.color = 'red';
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>

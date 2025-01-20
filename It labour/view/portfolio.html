@@ -119,15 +119,7 @@
 
         <div class="portfolio-list">
             <h2>Your Portfolio</h2>
-            <div class="portfolio-item">
-                <h3>Website Redesign</h3>
-                <p><strong>Description:</strong> Redesigned the corporate website for a financial firm, improving user experience and mobile responsiveness.</p>
-                <p><strong>Skills:</strong> HTML, CSS, JavaScript, Bootstrap</p>
-                <div class="testimonial">
-                    <p>"Great work on our website redesign! The new site looks fantastic and works perfectly on all devices."</p>
-                </div>
-                <button>Delete Project</button>
-            </div>
+            <!-- Portfolio items will be appended dynamically -->
         </div>
     </div>
 
@@ -141,34 +133,50 @@
             const skillsUsed = document.getElementById('skills-used').value;
             const testimonial = document.getElementById('testimonial').value;
 
-            const portfolioList = document.querySelector('.portfolio-list');
-            const portfolioItem = document.createElement('div');
-            portfolioItem.className = 'portfolio-item';
+            const requestData = {
+                projectTitle: projectTitle,
+                projectDescription: projectDescription,
+                skillsUsed: skillsUsed,
+                testimonial: testimonial
+            };
 
-            portfolioItem.innerHTML = `
-                <h3>${projectTitle}</h3>
-                <p><strong>Description:</strong> ${projectDescription}</p>
-                <p><strong>Skills:</strong> ${skillsUsed}</p>
-                ${
-                    testimonial
-                        ? `<div class="testimonial"><p>"${testimonial}"</p></div>`
-                        : ''
+            // Send data to the server using AJAX
+            fetch('submit_portfolio.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const portfolioList = document.querySelector('.portfolio-list');
+                    const portfolioItem = document.createElement('div');
+                    portfolioItem.className = 'portfolio-item';
+
+                    portfolioItem.innerHTML = `
+                        <h3>${projectTitle}</h3>
+                        <p><strong>Description:</strong> ${projectDescription}</p>
+                        <p><strong>Skills:</strong> ${skillsUsed}</p>
+                        ${testimonial ? `<div class="testimonial"><p>"${testimonial}"</p></div>` : ''}
+                        <button>Delete Project</button>
+                    `;
+
+                    portfolioList.appendChild(portfolioItem);
+
+                    portfolioItem.querySelector('button').addEventListener('click', () => {
+                        portfolioItem.remove();
+                    });
+
+                    form.reset();
+                } else {
+                    alert('Failed to add project: ' + data.message);
                 }
-                <button>Delete Project</button>
-            `;
-
-            portfolioList.appendChild(portfolioItem);
-
-            form.reset();
-
-            portfolioItem.querySelector('button').addEventListener('click', () => {
-                portfolioItem.remove();
-            });
-        });
-
-        document.querySelectorAll('.portfolio-item button').forEach((button) => {
-            button.addEventListener('click', (event) => {
-                event.target.closest('.portfolio-item').remove();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the project.');
             });
         });
     </script>

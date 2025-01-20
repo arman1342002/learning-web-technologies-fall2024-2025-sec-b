@@ -107,54 +107,73 @@
 
         <div class="alert-list">
             <h2>Your Job Alerts</h2>
-            <div class="alert-item">
-                <p><strong>Job Title:</strong> Software Engineer</p>
-                <p><strong>Location:</strong> San Francisco</p>
-                <p><strong>Salary Range:</strong> 100k - 150k</p>
-                <button>Delete Alert</button>
-            </div>
-            <div class="alert-item">
-                <p><strong>Job Title:</strong> Data Scientist</p>
-                <p><strong>Location:</strong> New York</p>
-                <p><strong>Salary Range:</strong> 50k - 100k</p>
-                <button>Delete Alert</button>
-            </div>
         </div>
     </div>
 
     <script>
         const form = document.getElementById('job-alert-form');
+        const alertList = document.querySelector('.alert-list');
+
+        // Event listener for form submission
         form.addEventListener('submit', (event) => {
             event.preventDefault();
 
+            // Collect form data
             const jobTitle = document.getElementById('job-title').value;
             const location = document.getElementById('location').value;
             const salaryRange = document.getElementById('salary-range').value;
 
-            const alertList = document.querySelector('.alert-list');
-            const alertItem = document.createElement('div');
-            alertItem.className = 'alert-item';
+            // Create alert object
+            const alertData = {
+                jobTitle,
+                location,
+                salaryRange
+            };
 
-            alertItem.innerHTML = `
-                <p><strong>Job Title:</strong> ${jobTitle}</p>
-                <p><strong>Location:</strong> ${location}</p>
-                <p><strong>Salary Range:</strong> ${salaryRange}</p>
-                <button>Delete Alert</button>
-            `;
+            // Simulate AJAX request
+            fetch('https://example.com/addAlert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(alertData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Add alert to the UI
+                    const alertItem = document.createElement('div');
+                    alertItem.className = 'alert-item';
 
-            alertList.appendChild(alertItem);
+                    alertItem.innerHTML = `
+                        <p><strong>Job Title:</strong> ${data.jobTitle}</p>
+                        <p><strong>Location:</strong> ${data.location}</p>
+                        <p><strong>Salary Range:</strong> ${data.salaryRange}</p>
+                        <button>Delete Alert</button>
+                    `;
 
-            form.reset();
+                    alertList.appendChild(alertItem);
 
-            alertItem.querySelector('button').addEventListener('click', () => {
-                alertItem.remove();
-            });
-        });
+                    // Add delete functionality
+                    alertItem.querySelector('button').addEventListener('click', () => {
+                        // Simulate AJAX delete request
+                        fetch('https://example.com/deleteAlert', {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ jobTitle: data.jobTitle })
+                        })
+                            .then(() => {
+                                alertItem.remove();
+                            });
+                    });
 
-        document.querySelectorAll('.alert-item button').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.target.closest('.alert-item').remove();
-            });
+                    // Reset form
+                    form.reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     </script>
 </body>
